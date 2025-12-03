@@ -3,7 +3,7 @@ import java.util.*;
 
 public class day1 {
     public static void main(String[] args) {
-        String FILE_PATH = "./day1_input.txt";
+        String FILE_PATH = "./day1/day1_input.txt";
         File file = new File(FILE_PATH);
         int pointer = 50;
         int pass = 0;
