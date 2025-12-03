@@ -5,22 +5,44 @@ public class day3_part2 {
     public static void main(String[] args) {
         String FILE_PATH = "./day3/day3_input.txt";
         File file = new File(FILE_PATH);
-        int totalVoltage = 0;
+        long totalVoltage = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
-                int max = 0;
-                for(int i = 0; i < line.length() - 1; i++){
-                    for(int j = i + 1; j < line.length(); j++){
-                        String num = line.charAt(i) + "" + line.charAt(j);
-                        int voltage = Integer.parseInt(num);
-                        if (max<voltage) {max = voltage;}
+                int count = 12;
+                int n = line.length();
+                int toRemove = n - count;
+
+                ArrayList<Character> list = new ArrayList<>();
+
+                for (int i = 0; i < n; i++) {
+                    char c = line.charAt(i);
+                    while (!list.isEmpty() &&
+                            list.get(list.size() - 1) < c &&
+                            toRemove > 0) {
+
+                        list.remove(list.size() - 1);
+                        toRemove--;
                     }
+                    list.add(c);
                 }
-                totalVoltage += max;
-                System.out.println(max);
+                while (list.size() > count) {
+                    list.remove(list.size() - 1);
+                }
+
+                String result = "";
+                for (int i = 0; i < list.size(); i++) {
+                    result += list.get(i);
+                }
+
+                System.out.println(result);
+
+                totalVoltage += Long.parseLong(result);
             }
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         System.out.println(totalVoltage);
     }
 }
