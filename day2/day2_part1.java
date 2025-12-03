@@ -14,6 +14,22 @@ public class day2_part1 {
 
         //string to array
         String[] arr = line.split(",");
-        System.out.println(arr[0]);
+
+        int length = arr.length;
+        long total = 0;
+        for (int i = 0; i < length; i++) {
+            String[] parts = arr[i].split("-");
+            //spliting the strings, then go from parts[0] to parts[1]
+            for(long j = Long.parseLong(parts[0]); j <= Long.parseLong(parts[1]); j++){
+                String n = "" + j;
+                int len = n.length();
+                String half1 = n.substring(0, len / 2);
+                String half2 = n.substring(len / 2);
+                if (half1.equals(half2)) {
+                    total += j;
+                }
+            }
+        }
+        System.out.println(total);
     }
 }
