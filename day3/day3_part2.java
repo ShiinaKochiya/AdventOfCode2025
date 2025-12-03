@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class day3_part1 {
+public class day3_part2 {
     public static void main(String[] args) {
         String FILE_PATH = "./day3/day3_input.txt";
         File file = new File(FILE_PATH);
