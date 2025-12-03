@@ -28,14 +28,23 @@ public class day2_part2 {
                 for (int k = 1; k <= len / 2; k++){
                     String sec = n.substring(0,k);
                     String comp = "";
+
                     while (comp.length() < len){
                         comp = comp + sec;
                     }
                     comp = comp.substring(0,len);
-                    if(n.equals(comp)){
-                        if(!res.contains(comp)) {
+
+                    if(n.equals(comp) && len % sec.length() == 0){
+                        if(!res.contains(n)) {
                             total += j;
-                            res.add(comp);
+                            res.add(n);
+
+                            //logging for checks
+
+                            System.out.println("number:" + n);
+                            System.out.println("length:" + len);
+                            System.out.println("sec:" + sec);
+                            System.out.println("comp:" + comp);
                         }
                     }
                 }
