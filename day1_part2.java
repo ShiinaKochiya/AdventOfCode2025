@@ -14,24 +14,26 @@ public class day1_part2 {
                     //go back
                     int oldPointer = pointer;
                     line = line.replaceAll("L", "");
-                    pointer -= Integer.parseInt(line);
-                    while (pointer < 0) {
-                        pointer += 100;
-                        if(pointer != 0)pass++;
-                    }
-                    if (pointer == 0) {
-                        pass++;
+                    int loop = Integer.parseInt(line);
+                    while(loop!=0){
+                        pointer--;
+                        loop--;
+                        if (pointer == 0) {
+                            pass++;
+                        }
+                        if (pointer == -1){pointer = 99;}
                     }
                 } else {
                     //go forward
                     line = line.replaceAll("R", "");
-                    pointer += Integer.parseInt(line);
-                    while (pointer > 99) {
-                        pointer -= 100;
-                        if(pointer != 0)pass++;
-                    }
-                    if (pointer == 0) {
-                        pass++;
+                    int loop = Integer.parseInt(line);
+                    while (loop != 0){
+                        pointer++;
+                        loop--;
+                        if (pointer == 0) {
+                            pass++;
+                        }
+                        if (pointer == 100){pointer = 0;}
                     }
                 }
             }
