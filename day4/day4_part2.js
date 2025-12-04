@@ -1,6 +1,6 @@
 const fs = require('fs');
 const readline = require('readline');
-
+console.time("runtime");
 const rl = readline.createInterface({
     input: fs.createReadStream('day4_input.txt'),
     crlfDelay: Infinity
@@ -64,9 +64,10 @@ rl.on('close', () => {
                 };
             }
         }
-        console.log(roll);
     }
     //end of func
+    console.timeEnd("runtime");
+    console.log(roll);
 });
 
 
