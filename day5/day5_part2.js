@@ -86,71 +86,41 @@ rl.on('line', (line) => {
 
 rl.on('close', () => {
 
-    //cycles through fresh IDs to group remaining ranges that get through the first one
-    cycleMerge = true
-    while(cycleMerge){
-        cycleMerge = false
-        for (let i = 0; i < numRangeBot.length; i++) {
-            for (let j = 0; j <= numRangeTop.length; j++) {
-                //checking all overlap cases
-                //type 1: end is before end range
-                if (numRangeBot[i] < numRangeBot[j]) {
-                    //end in range, start is before start range
-                    //replace start with new start
-                    if (numRangeTop[i] < numRangeTop[j] && numRangeBot[i] > numRangeTop[i]) {
-                        cycleMerge = true
-                        numRangeTop[j] = numRangeTop[i]
-                        numRangeTop.splice(i, 1)
-                        numRangeBot.splice(i, 1)
-                    }
-                    //end in range, start is also in range
-                    else if (numRangeTop[i] > numRangeTop[j] && numRangeBot[i] > numRangeTop[j]) {
-                        cycleMerge = true
-                        numRangeTop.splice(i, 1)
-                        numRangeBot.splice(i, 1)
-                    }
-                    //end out of range
-                    else if (endNum < numRangeTop[i]) {
-                        //what, what do you expect
-                    }
-                }
+    let ranges = [];
+    //2d array
+    for (let k = 0; k < numRangeTop.length; k++) {
+        ranges.push({
+            start: numRangeTop[k],
+            end: numRangeBot[k]
+        });
+    }
 
-                //type 2: start is after start range
-                if (numRangeTop[i] > numRangeTop[j]) {
-                    //start in range, end is after end range
-                    //replace end with new end
-                    if (numRangeBot[i] > numRangeBot[j] && numRangeTop[i] < numRangeBot[j]) {
-                        cycleMerge = true
-                        numRangeBot[j] = numRangeBot[i]
-                        numRangeTop.splice(i, 1)
-                        numRangeBot.splice(i, 1)
-                    }
-                    //end in range, start is also in range
-                    else if (numRangeBot[i] < numRangeBot[j] && numRangeTop[i] < numRangeBot[j]) {
-                        cycleMerge = true
-                        numRangeTop.splice(i, 1)
-                        numRangeBot.splice(i, 1)
-                    }
-                    //start out of range
-                    else if (endNum > numRangeBot[i] && startNum > numRangeBot[i]) {
-                        //what, what do you expect pt2
-                    }
-                }
+// Sort by start
+    ranges.sort((a, b) => a.start < b.start ? -1 : 1);
 
-                //type 3: total overlap
-                if (startNum <= numRangeTop[i] && endNum >= numRangeBot[i]) {
-                    cycleMerge = true
-                    numRangeBot[j] = numRangeBot[i]
-                    numRangeTop[j] = numRangeTop[i]
-                    numRangeTop.splice(i, 1)
-                    numRangeBot.splice(i, 1)
-                }
+// Merge
+    let merged = [];
+    for (const r of ranges) {
+        if (merged.length === 0 || r.start > merged[merged.length - 1].end) {
+            merged.push({ ...r });
+        } else {
+            const last = merged[merged.length - 1];
+            if (r.end > last.end) {
+                last.end = r.end;
             }
         }
     }
+    totalValid = 0n;
+    for (let i = 0; i < merged.length; i++) {
+        const start = merged[i].start;
+        const end = merged[i].end;
+        const sh = end - start + 1n;
+        totalValid += sh;
+    }
 
-    console.log(numRangeBot)
-    console.log(numRangeTop)
+
+    console.log(totalValid)
+
     //spoiled IDs are irrelevant now, but im keeping this here, idk why dont ask
 
     /*
