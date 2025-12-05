@@ -71,15 +71,29 @@ rl.on('line', (line) => {
         if (check) {
             numRangeBot.push(endNum)
             numRangeTop.push(startNum)
+            console.log("added number set:" + startNum + "-" + endNum)
         }
     } else {
         //append ids
-        if(line !== "") idNum.push(BigInt(line))
+        if(line !== "") {
+            idNum.push(BigInt(line))
+            console.log("added id: " + line + "")
+        }
     }
 });
 
-
+    totalValid = 0
 
 rl.on('close', () => {
+    for(let i = 0; i < idNum.length; i++) {
+        for(let j = 0; j < numRangeBot.length; j++) {
+            if(idNum[i] <= numRangeBot[j] && idNum[i] >= numRangeTop[j]) {
+                totalValid++
+                console.log("valid id: " + idNum[i])
+                break
+            }
+        }
+    }
 
+    console.log(totalValid)
 })
