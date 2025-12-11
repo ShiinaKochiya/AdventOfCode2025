@@ -12,32 +12,8 @@ rl.on('line', (line) => {
     loc.push(line.split(","))
 });
 
-//loc[i][0] is x cord, loc[i][1] is y cord and last one [2] is z cord
-
 rl.on('close', () => {
-    let distArr = makeArray(loc.length)
-    for (let i = 0; i < loc.length; i++) {
-        for (let j = 0; j < loc.length; j++) {
-            if(distArr[i][j] != -1 && distArr[i][j] == 0) {
-                distance = dist(loc[i], loc[j])
-                distArr[i][j] = distance
-                distArr[j][i] = distance
-            }
 
-        }
-    }
-    //im gonna assume that the "far" value is 500
-    //ok brainstorm time
-    /*
-    * 1. going to cycle through the distArr (I love efficiency)
-    * 2. find the smallest val (must under 500 to consider adding into an circuit)
-    * 3. if fit, add to a circuit (perf its gonna be another 2d array | the added param will be the id)
-    * 4. if unfit, append as a brandnew, standalone array?
-    * 5. Iterate, this time, skipping the added ones (or removing their dist array values)
-    * */
-    for (let i = 0; i < loc.length; i++) {
-        console.log(distArr[i].toLocaleString())
-    }
 })
 
 // Source - https://stackoverflow.com/a/13808461
