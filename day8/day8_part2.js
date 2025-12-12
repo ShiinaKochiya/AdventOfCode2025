@@ -13,7 +13,6 @@ rl.on("line", (line) => {
 });
 
 rl.on("close", () => {
-
     function dist(a, b) {
         const dx = a[0] - b[0];
         const dy = a[1] - b[1];
@@ -56,18 +55,19 @@ rl.on("close", () => {
     edges.sort((a, b) => a.d - b.d);
 
     const uf = new UnionFind(n);
+    let compCount = n;
+    let lastPair = null;
 
-    for (let k = 0; k < 1000; k++) {
+    for (let k = 0; k < edges.length; k++) {
         const { i, j } = edges[k];
-        uf.union(i, j);
+        if (uf.union(i, j)) {
+            compCount--;
+            if (compCount === 1) {
+                lastPair = [i, j];
+                break;
+            }
+        }
     }
 
-    const comp = {};
-    for (let i = 0; i < n; i++) {
-        const r = uf.find(i);
-        comp[r] = (comp[r] || 0) + 1;
-    }
-
-    const sizes = Object.values(comp).sort((a, b) => b - a);
-    console.log(sizes[0] * sizes[1] * sizes[2]);
+    console.log(loc[lastPair[0]][0] * loc[lastPair[1]][0]);
 });
