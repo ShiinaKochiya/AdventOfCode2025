@@ -6,37 +6,45 @@ const rl = readline.createInterface({
     crlfDelay: Infinity
 });
 
-serverMap = []
+matrix = []
 
 rl.on('line', (line) => {
-    rack = line.split(" ")
-    serverMap.push(rack)
+    temp = line.split("")
+    matrix.push(temp)
 });
 
 rl.on('close', () => {
-    let endReached = 0;
-    const graph = {};
+    const R = matrix.length;
+    const C = matrix[0].length;
 
-    for (const arr of serverMap) {
-        const key = arr[0];
-        graph[key] = arr.slice(1);
-    }
+    const startCol = matrix[0].indexOf("S");
 
-    function dfs(node) {
-        for (const next of graph[node]) {
-            if (next === "out") {
-                endReached++;
-            } else {
-                dfs(next + ":");
+    const memo = new Map();
+
+    function countTimelines(r, c) {
+        if (c < 0 || c >= C) return 1n;
+
+        const key = r + "," + c;
+        if (memo.has(key)) return memo.get(key);
+
+        let rr = r;
+        while (rr < R) {
+            const ch = matrix[rr][c];
+            if (ch === '^') {
+                const left = countTimelines(rr, c - 1);
+                const right = countTimelines(rr, c + 1);
+                const total = left + right;
+                memo.set(key, total);
+                return total;
             }
+            rr++;
         }
+
+        memo.set(key, 1n);
+        return 1n;
     }
 
-    const start = serverMap.find(x => x[0] === "you:");
+    const result = countTimelines(0, startCol);
 
-    for (let i = 1; i < start.length; i++) {
-        dfs(start[i] + ":");
-    }
-
-    console.log(endReached);
+    console.log("Total timelines:", result);
 });
